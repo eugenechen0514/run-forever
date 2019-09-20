@@ -1,6 +1,6 @@
 {
   "name": "run-forever",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "run-forever",
   "main": "index.js",
   "scripts": {
