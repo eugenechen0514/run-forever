@@ -20,3 +20,14 @@ export function forever<T = ForeverControlValue>(fn: ForeverExecutionFunction, p
 	}, fn, previousValue, callback);
 }
 
+export function foreverPromise<T = ForeverControlValue>(fn: ForeverExecutionFunction, previousValue?: T): Promise<ForeverControlValue<T>> {
+	return new Promise((resolve, reject) => {
+		forever(fn, previousValue, (e, value) => {
+			if(e) {
+				reject(e);
+			} else {
+				resolve(value);
+			}
+		});
+	});
+}
