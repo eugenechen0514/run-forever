@@ -10,10 +10,12 @@ export function forever<T = ForeverControlValue>(fn: ForeverExecutionFunction, p
 			.then((newValue: ForeverControlValue) => {
 				if(newValue !== END) {
 					forever(_fn, newValue, _callback);
+				} else {
+					_callback(null, newValue)
 				}
 			})
 			.catch((e: Error) => {
-				_callback(e);
+				_callback(e, _previousValue);
 			})
 	}, fn, previousValue, callback);
 }
