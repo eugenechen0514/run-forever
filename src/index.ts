@@ -1,20 +1,20 @@
 export const END = Symbol('run-forever');
 
-export type ForeverControlValue = any;
-export type ForeverExecutionFunction<T = ForeverControlValue> = (previousValue?: T) => Promise<T | Symbol>;
-export type ForeverFailCallback = (e: Error) => void;
+export type ForeverControlValue<T = any> = T | Symbol;
+export type ForeverExecutionFunction<T = ForeverControlValue> = (previousValue?: T) => Promise<ForeverControlValue<T>>;
+export type ForeverCallback = (e?: Error, value?: ForeverControlValue) => void;
 
-export function forever<T = ForeverControlValue>(fn: ForeverExecutionFunction, previousValue?: T, failCallback: ForeverFailCallback = (e) => {}): void {
-	setImmediate((_fn, _previousValue, _failCallback) => {
+export function forever<T = ForeverControlValue>(fn: ForeverExecutionFunction, previousValue?: T, callback: ForeverCallback = () => {}): void {
+	setImmediate((_fn, _previousValue, _callback) => {
 		_fn(_previousValue)
 			.then((newValue: ForeverControlValue) => {
 				if(newValue !== END) {
-					forever(_fn, newValue, _failCallback);
+					forever(_fn, newValue, _callback);
 				}
 			})
 			.catch((e: Error) => {
-				_failCallback(e);
+				_callback(e);
 			})
-	}, fn, previousValue, failCallback);
+	}, fn, previousValue, callback);
 }
 
