@@ -1,8 +1,8 @@
 {
   "name": "run-forever",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "run-forever",
-  "main": "index.js",
+  "main": "dist/index.js",
   "scripts": {
     "dev": "tsc -p ./tsconfig.json -w",
     "dist": "tsc -p ./tsconfig.json -outDir ./dist",
