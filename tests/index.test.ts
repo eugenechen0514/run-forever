@@ -40,6 +40,19 @@ test('should stop by passing a value', done => {
     }, 1000);
 }, 2000);
 
+test('call callback when forever stop', done => {
+    let lastValue = 0;
+
+    const successCallback = (e?: Error) => {
+        done(e);
+    };
+
+    forever(async i => {
+        i++;
+        return i === 10 ? END : i;
+    }, 0, successCallback);
+}, 2000);
+
 test('rejects when returned a reject promise', done => {
     const aError =  new Error('error');
 
@@ -62,10 +75,13 @@ test('rejects when returned a reject promise', done => {
     }, 1000);
 }, 2000);
 
-test('call failCallback when returned a reject promise', done => {
+test('call callback when returned a reject promise', done => {
     const aError =  new Error('error');
 
-    const failCallback = () => {
+    const failCallback = (e?: Error) => {
+        if(!e) {
+            done(new Error('should have an error'))
+        }
         done();
     };
 
