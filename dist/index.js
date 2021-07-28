@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.foreverPromise = exports.forever = exports.END = void 0;
 exports.END = Symbol('run-forever');
 function forever(fn, previousValue, callback = () => { }) {
     setImmediate((_fn, _previousValue, _callback) => {
@@ -9,7 +10,7 @@ function forever(fn, previousValue, callback = () => { }) {
                 forever(_fn, newValue, _callback);
             }
             else {
-                _callback(null, newValue);
+                _callback(undefined, newValue);
             }
         })
             .catch((e) => {

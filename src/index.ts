@@ -11,7 +11,7 @@ export function forever<T = ForeverControlValue>(fn: ForeverExecutionFunction, p
 				if(newValue !== END) {
 					forever(_fn, newValue, _callback);
 				} else {
-					_callback(null, newValue)
+					_callback(undefined, newValue)
 				}
 			})
 			.catch((e: Error) => {
