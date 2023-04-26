@@ -10,7 +10,7 @@
     "test": "jest",
     "test:dev": "jest --watch"
   },
-  "types": "types/main.d.ts",
+  "types": "dist/index.d.ts",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/eugenechen0514/run-forever.git"
