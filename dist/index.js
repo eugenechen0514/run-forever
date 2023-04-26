@@ -7,10 +7,12 @@ function forever(fn, previousValue, callback = () => { }) {
         _fn(_previousValue)
             .then((newValue) => {
             if (newValue !== exports.END) {
+                // keep loop, pass newValue
                 forever(_fn, newValue, _callback);
             }
             else {
-                _callback(undefined, newValue);
+                // stop process, return _previousValue
+                _callback(undefined, _previousValue);
             }
         })
             .catch((e) => {

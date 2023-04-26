@@ -10,9 +10,11 @@ export function forever<INIT_V = undefined>(fn: ForeverExecutionFunction<INIT_V>
 		_fn(_previousValue)
 			.then((newValue) => {
 				if(newValue !== END) {
-					forever<T, CV, INIT_PV>(_fn, newValue, _callback);
+					// keep loop, pass newValue
+					forever(_fn, newValue as INIT_V, _callback);
 				} else {
-					_callback(undefined, newValue)
+					// stop process, return _previousValue
+					_callback(undefined, _previousValue)
 				}
 			})
 			.catch((e: Error) => {
