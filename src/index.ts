@@ -20,7 +20,7 @@ export function forever<T  = undefined, CV = ForeverControlValue<T>, INIT_PV = C
 	}, fn, previousValue, callback);
 }
 
-export function foreverPromise<T  = any, CV = ForeverControlValue<T>, INIT_PV = CV | undefined>(fn: ForeverExecutionFunction<T, INIT_PV>, previousValue: INIT_PV): Promise<INIT_PV> {
+export function foreverPromise<T  = undefined, CV = ForeverControlValue<T>, INIT_PV = CV | undefined>(fn: ForeverExecutionFunction<T, INIT_PV>, previousValue: INIT_PV): Promise<INIT_PV> {
 	return new Promise((resolve, reject) => {
 		forever<T, CV, INIT_PV>(fn, previousValue, (e, value) => {
 			if(e) {
