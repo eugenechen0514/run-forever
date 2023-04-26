@@ -25,3 +25,12 @@ forever(async i => {
     return i === 10 ? END : i;
 }, 0);
 ```
+
+TS
+```typescript
+import {forever, END} from 'run-forever'
+forever(async i => {
+  i++;
+  return i === 10 ? END : i;
+}, 0);
+```
