@@ -1,6 +1,6 @@
 {
   "name": "run-forever",
-  "version": "0.3.1",
+  "version": "0.3.2",
   "description": "run-forever",
   "main": "dist/index.js",
   "scripts": {
