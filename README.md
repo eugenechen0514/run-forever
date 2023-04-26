@@ -28,7 +28,7 @@ forever(async i => {
 
 TS
 ```typescript
-import {forever, END} from 'run-forever'
+import {forever, END} from 'run-forever';
 forever(async i => {
   i++;
   return i === 10 ? END : i;
