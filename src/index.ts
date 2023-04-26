@@ -1,15 +1,15 @@
 export const END = Symbol('run-forever');
 
-export type ForeverControlValue<T = any> = T | Symbol;
-export type ForeverExecutionFunction<T = any, CV = ForeverControlValue<T>> = (previousValue?: CV) => Promise<CV>;
-export type ForeverCallback<T = any, CV = ForeverControlValue<T>> = (e?: Error | undefined, value?: CV) => void;
+export type ForeverControlValue<T = undefined> = T | undefined | Symbol;
+export type ForeverExecutionFunction<T = undefined, CV = ForeverControlValue<T>> = (previousValue: CV) => Promise<CV>;
+export type ForeverCallback<T = undefined, CV = ForeverControlValue<T>> = (e: Error | undefined, value: CV) => void;
 
-export function forever<T  = any, CV = ForeverControlValue<T>>(fn: ForeverExecutionFunction<T, CV>, previousValue?: CV, callback: ForeverCallback<T, CV> = () => {}): void {
-	setImmediate((_fn: ForeverExecutionFunction<T, CV>, _previousValue: CV, _callback: ForeverCallback<T, CV>) => {
+export function forever<T  = undefined, CV = ForeverControlValue<T>, INIT_PV = CV | undefined>(fn: ForeverExecutionFunction<T, INIT_PV>, previousValue: INIT_PV, callback: ForeverCallback<T, INIT_PV> = () => {}): void {
+	setImmediate((_fn: ForeverExecutionFunction<T, INIT_PV>, _previousValue: INIT_PV, _callback: ForeverCallback<T, INIT_PV>) => {
 		_fn(_previousValue)
-			.then((newValue: ForeverControlValue) => {
+			.then((newValue) => {
 				if(newValue !== END) {
-					forever(_fn, newValue, _callback);
+					forever<T, CV, INIT_PV>(_fn, newValue, _callback);
 				} else {
 					_callback(undefined, newValue)
 				}
@@ -20,9 +20,9 @@ export function forever<T  = any, CV = ForeverControlValue<T>>(fn: ForeverExecut
 	}, fn, previousValue, callback);
 }
 
-export function foreverPromise<T  = any, CV = ForeverControlValue<T>>(fn: ForeverExecutionFunction<T, CV>, previousValue?: CV): Promise<CV | undefined> {
+export function foreverPromise<T  = any, CV = ForeverControlValue<T>, INIT_PV = CV | undefined>(fn: ForeverExecutionFunction<T, INIT_PV>, previousValue: INIT_PV): Promise<INIT_PV> {
 	return new Promise((resolve, reject) => {
-		forever(fn, previousValue, (e, value) => {
+		forever<T, CV, INIT_PV>(fn, previousValue, (e, value) => {
 			if(e) {
 				reject(e);
 			} else {
