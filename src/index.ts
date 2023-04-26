@@ -1,11 +1,11 @@
 export const END = Symbol('run-forever');
 
 export type ForeverControlValue<T = any> = T | Symbol;
-export type ForeverExecutionFunction<T = ForeverControlValue> = (previousValue?: T) => Promise<ForeverControlValue<T>>;
-export type ForeverCallback = (e?: Error | undefined, value?: ForeverControlValue) => void;
+export type ForeverExecutionFunction<T = any, CV = ForeverControlValue<T>> = (previousValue?: CV) => Promise<CV>;
+export type ForeverCallback<T = any, CV = ForeverControlValue<T>> = (e?: Error | undefined, value?: CV) => void;
 
-export function forever<T = ForeverControlValue>(fn: ForeverExecutionFunction, previousValue?: T, callback: ForeverCallback = () => {}): void {
-	setImmediate((_fn: ForeverExecutionFunction, _previousValue: T, _callback: ForeverCallback) => {
+export function forever<T  = any, CV = ForeverControlValue<T>>(fn: ForeverExecutionFunction<T, CV>, previousValue?: CV, callback: ForeverCallback<T, CV> = () => {}): void {
+	setImmediate((_fn: ForeverExecutionFunction<T, CV>, _previousValue: CV, _callback: ForeverCallback<T, CV>) => {
 		_fn(_previousValue)
 			.then((newValue: ForeverControlValue) => {
 				if(newValue !== END) {
@@ -20,7 +20,7 @@ export function forever<T = ForeverControlValue>(fn: ForeverExecutionFunction, p
 	}, fn, previousValue, callback);
 }
 
-export function foreverPromise<T = ForeverControlValue>(fn: ForeverExecutionFunction, previousValue?: T): Promise<ForeverControlValue<T>> {
+export function foreverPromise<T  = any, CV = ForeverControlValue<T>>(fn: ForeverExecutionFunction<T, CV>, previousValue?: CV): Promise<CV | undefined> {
 	return new Promise((resolve, reject) => {
 		forever(fn, previousValue, (e, value) => {
 			if(e) {
