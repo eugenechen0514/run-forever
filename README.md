@@ -9,31 +9,47 @@ npm install run-forever --save
 
 ## Usage 
 
-### forever(): non-block
+### forever(fn, previousValue, callback)
 
-ES6
-```javascript
-import {forever, END} from 'run-forever';
-forever(async i => {
-    i++;
-    return i === 10 ? END : i;
-}, 0);
-```
+| parameter     | type                         | description                                                                            |
+| ------------- | ---------------------------- | -------------------------------------------------------------------------------------- |
+| fn            | (previousValue) => Promise   | Execution function. **forever()** exits if returns a promise with `END` resolved data. |
+| previousValue | any                          | Initialize a previous value to pass through executions                                 |
+| callback      | (err, previousValue) => void | Invoke the callback if **forever()** exists                                            |
 
-ES5
-```javascript
-const {forever, END} = require('run-forever');
-forever(async i => {
-    i++;
-    return i === 10 ? END : i;
-}, 0);
-```
-
-TS
 ```typescript
 import {forever, END} from 'run-forever';
 forever(async i => {
   i++;
   return i === 10 ? END : i;
-}, 0);
+},
+  0,
+  (err, previousValue) => {
+    if(err) console.error(err);
+    else console.log(previousValue);
+  }
+);
+console.log('start');
+```
+
+### foreverPromise(fn, previousValue)
+
+| parameter     | type                       | description                                                                            |
+| ------------- | -------------------------- | -------------------------------------------------------------------------------------- |
+| fn            | (previousValue) => Promise | Execution function. **forever()** exits if returns a promise with `END` resolved data. |
+| previousValue | any                        | Initialize a previous value to pass through executions                                 |
+
+**return**: Promise with previousValue data
+
+```typescript
+import { foreverPromise, END } from 'run-forever';
+
+(async () => {
+  console.log('start');
+  const previousValue = await foreverPromise(async (count) => {
+    count++;
+    return count === 10 ? END : count;
+  }, 0);
+  console.log('forever done ' + previousValue);
+})().catch(console.error);
 ```
