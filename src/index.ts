@@ -5,13 +5,13 @@ export type ForeverPreviousValue<T = undefined> = Exclude<T, Symbol>;
 export type ForeverExecutionFunction<T = undefined> = (previousValue: ForeverPreviousValue<T>) => Promise<ForeverControlValue<T>>;
 export type ForeverCallback<T = undefined> = (e: Error | undefined, value: ForeverPreviousValue<T>) => void;
 
-export function forever<INIT_V = undefined>(fn: ForeverExecutionFunction<INIT_V>, previousValue: INIT_V, callback: ForeverCallback<INIT_V> = () => {}): void {
+export function forever<INIT_V = undefined>(fn: ForeverExecutionFunction<INIT_V>, previousValue?: INIT_V, callback: ForeverCallback<INIT_V> = () => {}): void {
 	setImmediate((_fn: ForeverExecutionFunction<INIT_V>, _previousValue: ForeverPreviousValue<INIT_V>, _callback: ForeverCallback<INIT_V>) => {
 		_fn(_previousValue)
 			.then((newValue) => {
 				if(newValue !== END) {
 					// keep loop, pass newValue
-					forever(_fn, newValue as INIT_V, _callback);
+					forever<INIT_V>(_fn, newValue as INIT_V, _callback);
 				} else {
 					// stop process, return _previousValue
 					_callback(undefined, _previousValue)
