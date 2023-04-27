@@ -2,7 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.foreverPromise = exports.forever = exports.END = void 0;
 exports.END = Symbol('run-forever');
-function forever(fn, previousValue, callback = () => { }) {
+function forever(fn, previousValue = undefined, callback = () => { }) {
     setImmediate((_fn, _previousValue, _callback) => {
         _fn(_previousValue)
             .then((newValue) => {

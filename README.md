@@ -8,6 +8,9 @@ npm install run-forever --save
 ```
 
 ## Usage 
+
+### forever(): non-block
+
 ES6
 ```javascript
 import {forever, END} from 'run-forever';
