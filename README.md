@@ -8,15 +8,18 @@ npm install run-forever --save
 ```
 
 ## Usage
-[more example](./example);
+[more example](./example)
 
 ### forever(fn, previousValue, callback)
+
+**Parameters**:
 
 | parameter     | type                         | description                                                                            |
 | ------------- | ---------------------------- |----------------------------------------------------------------------------------------|
 | fn            | (previousValue) => Promise   | Execution function. **forever()** exits if returns a promise with `END` resolved data. |
 | previousValue | any                          | optional. Initialize a previous value to pass through executions                       |
 | callback      | (err, previousValue) => void | optional. Invoke the callback if **forever()** exists                                            |
+
 
 ```typescript
 import {forever, END} from 'run-forever';
@@ -34,13 +37,14 @@ console.log('start');
 ```
 
 ### foreverPromise(fn, previousValue)
+**Parameters**:
 
 | parameter     | type                       | description                                                                            |
 | ------------- | -------------------------- | -------------------------------------------------------------------------------------- |
 | fn            | (previousValue) => Promise | Execution function. **forever()** exits if returns a promise with `END` resolved data. |
 | previousValue | any                        | optional. Initialize a previous value to pass through executions                                 |
 
-**return**: Promise with previousValue data
+**Return**: Promise with previousValue data
 
 ```typescript
 import { foreverPromise, END } from 'run-forever';
