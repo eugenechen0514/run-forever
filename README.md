@@ -7,15 +7,16 @@ Implement run forever by `setImmediate()` instead of a recursive function which 
 npm install run-forever --save
 ```
 
-## Usage 
+## Usage
+[more example](./example);
 
 ### forever(fn, previousValue, callback)
 
 | parameter     | type                         | description                                                                            |
-| ------------- | ---------------------------- | -------------------------------------------------------------------------------------- |
+| ------------- | ---------------------------- |----------------------------------------------------------------------------------------|
 | fn            | (previousValue) => Promise   | Execution function. **forever()** exits if returns a promise with `END` resolved data. |
-| previousValue | any                          | Initialize a previous value to pass through executions                                 |
-| callback      | (err, previousValue) => void | Invoke the callback if **forever()** exists                                            |
+| previousValue | any                          | optional. Initialize a previous value to pass through executions                       |
+| callback      | (err, previousValue) => void | optional. Invoke the callback if **forever()** exists                                            |
 
 ```typescript
 import {forever, END} from 'run-forever';
@@ -37,7 +38,7 @@ console.log('start');
 | parameter     | type                       | description                                                                            |
 | ------------- | -------------------------- | -------------------------------------------------------------------------------------- |
 | fn            | (previousValue) => Promise | Execution function. **forever()** exits if returns a promise with `END` resolved data. |
-| previousValue | any                        | Initialize a previous value to pass through executions                                 |
+| previousValue | any                        | optional. Initialize a previous value to pass through executions                                 |
 
 **return**: Promise with previousValue data
 
